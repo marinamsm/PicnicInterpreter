@@ -107,6 +107,7 @@ exp ::=
 | LET:l ID:v EQ exp:i IN exp:b     {: RESULT = new ExpLet(loc(lxleft, bxright), v, i, b); :}
 | IF:i exp:t THEN exp:a ELSE exp:b {: RESULT = new ExpIf(loc(ixleft, bxright), t, a, b); :}
 | ID:f LPAREN exps:args RPAREN:r   {: RESULT = new ExpCall(loc(fxleft, rxright), f, args); :}
+| ID:v ASSIGN exp:e                {: RESULT = new ExpAssign(loc(vxleft,exright), v, e); :}
 ;
 
 exps ::=
