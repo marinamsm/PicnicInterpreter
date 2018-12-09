@@ -49,7 +49,9 @@ parser code {:
 :};
 
 terminal String LITINT;
+terminal String LITDOUBLE;
 terminal String LITBOOL;
+terminal String LITSTRING;
 terminal String ID;
 terminal        PLUS, MINUS, TIMES, DIV, POWER;
 terminal        EQ, NE, LT, LE, GT, GE;
@@ -58,6 +60,8 @@ terminal        LPAREN, RPAREN, COMMA;
 terminal        BOOL, INT;
 terminal        IF, THEN, ELSE;
 terminal        LET, IN;
+terminal        ASSIGN;
+terminal        VOID, BOOL, INT, STRING;
 
 non terminal Program      program;
 non terminal Exp          exp;
@@ -83,7 +87,9 @@ program ::=
 
 exp ::=
   LITINT:cte                       {: RESULT = new ExpInt(loc(ctexleft, ctexright), cte); :}
+| LITDOUBLE:cte                    {: RESULT = new ExpDouble(loc(ctexleft, ctexright), cte); :}
 | LITBOOL:cte                      {: RESULT = new ExpBool(loc(ctexleft, ctexright), cte); :}
+| LITSTRING:cte                    {: RESULT = new ExpString(loc(ctexleft,ctexleft), cte); :}
 | ID:n                             {: RESULT = new ExpVar(loc(nxleft, nxright), n); :}
 | exp:x PLUS exp:y                 {: RESULT = new ExpBin(loc(xxleft, yxright), BinOp.PLUS, x, y); :}
 | exp:x MINUS exp:y                {: RESULT = new ExpBin(loc(xxleft, yxright), BinOp.MINUS, x, y); :}
@@ -113,8 +119,10 @@ fun ::=
 ;
 
 type ::=
-  INT:t  {: RESULT = new TyInt(loc(txleft, txright)); :}
-| BOOL:t {: RESULT = new TyBool(loc(txleft, txright)); :}
+  INT:t    {: RESULT = new TyInt(loc(txleft, txright)); :}
+| BOOL:t   {: RESULT = new TyBool(loc(txleft, txright)); :}
+| STRING:t {: RESULT = new TyString(loc(txleft, txright)); :}
+| VOID:T   {: RESULT = new TyVoid(loc(txleft, txright)); :}
 ;
 
 typeid ::=
