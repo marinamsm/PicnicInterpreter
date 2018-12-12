@@ -48,20 +48,21 @@ parser code {:
   }
 :};
 
-terminal String LITINT;
-terminal String LITDOUBLE;
-terminal String LITBOOL;
-terminal String LITSTRING;
-terminal String ID;
-terminal        PLUS, MINUS, TIMES, DIV, POWER;
-terminal        EQ, NE, LT, LE, GT, GE;
-terminal        AND, OR;
-terminal        LPAREN, RPAREN, COMMA;
-terminal        BOOL, INT;
-terminal        IF, THEN, ELSE;
-terminal        LET, IN;
-terminal        ASSIGN;
-terminal        VOID, BOOL, INT, STRING;
+terminal String     LITINT;
+terminal String     LITDOUBLE;
+terminal String     LITBOOL;
+terminal String     LITSTRING;
+terminal String     ID;
+terminal            PLUS, MINUS, TIMES, DIV, POWER;
+terminal            EQ, NE, LT, LE, GT, GE;
+terminal            AND, OR;
+terminal            LPAREN, RPAREN, COMMA;
+terminal            BOOL, INT;
+terminal            IF, THEN, ELSE;
+terminal            LET, IN;
+terminal            ASSIGN;
+terminal            VOID, STRING, DOUBLE;
+terminal            WHILE, DO;
 
 non terminal Program      program;
 non terminal Exp          exp;
@@ -104,10 +105,11 @@ exp ::=
 | exp:x GE exp:y                   {: RESULT = new ExpBin(loc(xxleft, yxright), BinOp.GE, x, y); :}
 | exp:x AND exp:y                  {: RESULT = new ExpBin(loc(xxleft, yxright), BinOp.AND, x, y); :}
 | exp:x OR exp:y                   {: RESULT = new ExpBin(loc(xxleft, yxright), BinOp.OR, x, y); :}
-| LET:l ID:v EQ exp:i IN exp:b     {: RESULT = new ExpLet(loc(lxleft, bxright), v, i, b); :}
+| LET:l ID:v ASSIGN exp:i IN exp:b {: RESULT = new ExpLet(loc(lxleft, bxright), v, i, b); :}
 | IF:i exp:t THEN exp:a ELSE exp:b {: RESULT = new ExpIf(loc(ixleft, bxright), t, a, b); :}
 | ID:f LPAREN exps:args RPAREN:r   {: RESULT = new ExpCall(loc(fxleft, rxright), f, args); :}
 | ID:v ASSIGN exp:e                {: RESULT = new ExpAssign(loc(vxleft,exright), v, e); :}
+| WHILE:w exp:t DO exp:b           {: RESULT = new ExpWhile(loc(wxleft,bxright), t, b); :}
 ;
 
 exps ::=
@@ -116,14 +118,15 @@ exps ::=
 ;
         
 fun ::=
-  typeid:n LPAREN typeids:ps RPAREN EQ exp:b {: RESULT = new Fun(loc(nxleft, bxright), n, ps, b); :}
+  typeid:n LPAREN typeids:ps RPAREN ASSIGN exp:b {: RESULT = new Fun(loc(nxleft, bxright), n, ps, b); :}
 ;
 
 type ::=
-  INT:t    {: RESULT = new TyInt(loc(txleft, txright)); :}
-| BOOL:t   {: RESULT = new TyBool(loc(txleft, txright)); :}
-| STRING:t {: RESULT = new TyString(loc(txleft, txright)); :}
-| VOID:T   {: RESULT = new TyVoid(loc(txleft, txright)); :}
+  INT:t     {: RESULT = new TyInt(loc(txleft, txright)); :}
+| DOUBLE:t  {: RESULT = new TyDouble(loc(txleft, txright)); :}
+| BOOL:t    {: RESULT = new TyBool(loc(txleft, txright)); :}
+| STRING:t  {: RESULT = new TyString(loc(txleft, txright)); :}
+| VOID:t    {: RESULT = new TyVoid(loc(txleft, txright)); :}
 ;
 
 typeid ::=

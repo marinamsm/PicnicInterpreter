@@ -30,7 +30,7 @@ public class ExpAssign extends Exp {
 
     @Override
     protected Type semantic_(Env env) {
-        // COMPLETE THIS CODE AND FIX THE RETURNED VALUE
-        return VOID.T;
+        // COMPLETE
+        return expression.type;
     }
 }

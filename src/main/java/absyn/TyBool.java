@@ -11,7 +11,7 @@ public class TyBool extends Ty {
       super(loc);
    }
 
-   @java.lang.Override
+   @Override
    public Tree.Node<String> toTree() {
       return Tree.of("bool");
    }

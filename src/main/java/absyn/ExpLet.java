@@ -28,6 +28,9 @@ public class ExpLet extends Exp {
 
    @Override
    protected Type semantic_(Env env) {
+      System.out.println("init: " + init.toString());
+      System.out.println("body: " + body.toString());
+      System.out.println("variable: " + variable);
       // check the initialization expression
       init.semantic(env);
       // save the current environment

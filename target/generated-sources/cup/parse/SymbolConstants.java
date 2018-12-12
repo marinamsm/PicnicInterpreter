@@ -8,39 +8,49 @@ package parse;
 /** CUP generated interface containing symbol constants. */
 public interface SymbolConstants {
   /* terminals */
-  public static final int TIMES = 7;
-  public static final int LITBOOL = 3;
-  public static final int AND = 16;
-  public static final int LT = 12;
-  public static final int NE = 11;
-  public static final int ELSE = 25;
-  public static final int PLUS = 5;
-  public static final int INT = 22;
-  public static final int RPAREN = 19;
-  public static final int OR = 17;
-  public static final int THEN = 24;
-  public static final int IN = 27;
-  public static final int IF = 23;
-  public static final int LPAREN = 18;
-  public static final int GT = 14;
-  public static final int ID = 4;
-  public static final int LE = 13;
-  public static final int COMMA = 20;
+  public static final int POWER = 11;
+  public static final int GE = 17;
+  public static final int LITSTRING = 5;
+  public static final int DOUBLE = 33;
+  public static final int LPAREN = 20;
+  public static final int INT = 24;
+  public static final int LITBOOL = 4;
+  public static final int MINUS = 8;
+  public static final int RPAREN = 21;
+  public static final int AND = 18;
+  public static final int LT = 14;
+  public static final int IN = 29;
+  public static final int OR = 19;
+  public static final int BOOL = 23;
+  public static final int COMMA = 22;
+  public static final int DIV = 10;
+  public static final int PLUS = 7;
+  public static final int ASSIGN = 30;
+  public static final int IF = 25;
+  public static final int ID = 6;
+  public static final int LE = 15;
+  public static final int LITDOUBLE = 3;
   public static final int EOF = 0;
-  public static final int DIV = 8;
-  public static final int GE = 15;
-  public static final int MINUS = 6;
   public static final int error = 1;
-  public static final int LET = 26;
-  public static final int EQ = 10;
-  public static final int BOOL = 21;
+  public static final int VOID = 31;
+  public static final int EQ = 12;
+  public static final int TIMES = 9;
+  public static final int ELSE = 27;
+  public static final int WHILE = 34;
+  public static final int LET = 28;
+  public static final int THEN = 26;
+  public static final int NE = 13;
+  public static final int STRING = 32;
   public static final int LITINT = 2;
-  public static final int POWER = 9;
+  public static final int GT = 16;
+  public static final int DO = 35;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
   "LITINT",
+  "LITDOUBLE",
   "LITBOOL",
+  "LITSTRING",
   "ID",
   "PLUS",
   "MINUS",
@@ -64,7 +74,13 @@ public interface SymbolConstants {
   "THEN",
   "ELSE",
   "LET",
-  "IN"
+  "IN",
+  "ASSIGN",
+  "VOID",
+  "STRING",
+  "DOUBLE",
+  "WHILE",
+  "DO"
   };
 }
 

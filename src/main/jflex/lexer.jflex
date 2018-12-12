@@ -75,12 +75,22 @@ import java_cup.runtime.ComplexSymbolFactory;
 
    // Auxiliary variables
    private int commentLevel;
+   private StringBuilder builder = new StringBuilder();
+   private Location strLeft;
 %}
 
 %state COMMENT
+%state STR
 
 litint    = [0-9]+
 litbool   = true | false
+litstring = \"[a-zA-Z][a-zA-Z0-9_]*\"
+FLit1     = [0-9]+ \. [0-9]*
+FLit2     = \. [0-9]+
+FLit3     = [0-9]+
+Exponent  = [eE] [+-]? [0-9]+
+litdouble    = ({FLit1}|{FLit2}|{FLit3}) {Exponent}?
+litvoid = null
 id        = [a-zA-Z][a-zA-Z0-9_]*
 
 %%
@@ -92,18 +102,28 @@ id        = [a-zA-Z][a-zA-Z0-9_]*
 
 {litint}     { return tok(LITINT, yytext()); }
 {litbool}    { return tok(LITBOOL, yytext()); }
+{litdouble}  { return tok(LITDOUBLE, new Double(yytext())); }
+{litstring}  { return tok(LITSTRING, new String(yytext())); }
+{litvoid}    { return tok(VOID, yytext().intern()); }
+\"           { builder.setLength(0); strLeft = locLeft(); yybegin(STR); }
 
 bool         { return tok(BOOL); }
 int          { return tok(INT); }
+double       { return tok(DOUBLE); }
+string       { return tok(STRING); }
+void         { return tok(VOID); }
 if           { return tok(IF); }
 then         { return tok(THEN); }
 else         { return tok(ELSE); }
 let          { return tok(LET); }
 in           { return tok(IN); }
-
+while        { return tok(WHILE); }
+do           { return tok(DO); }
 {id}         { return tok(ID, yytext().intern()); }
 
-"="          { return tok(EQ); }
+
+"="          { return tok(ASSIGN); }
+"=="         { return tok(EQ); }
 "~="         { return tok(NE); }
 "<"          { return tok(LT); }
 "<="         { return tok(LE); }
@@ -126,6 +146,22 @@ in           { return tok(IN); }
 "#}"         { if (--commentLevel == 0) yybegin(YYINITIAL); }
 [^]          { }
 <<EOF>>      { yybegin(YYINITIAL); error("unclosed comment"); }
+}
+
+<STR>{
+\"           { yybegin(YYINITIAL); return tok(LITSTRING, builder.toString(), strLeft, locRight()); }
+\\ b         { builder.append('\b'); }
+\\ t         { builder.append('\t'); }
+\\ n         { builder.append('\n'); }
+\\ r         { builder.append('\r'); }
+\\ f         { builder.append('\f'); }
+\\ \\        { builder.append('\\'); }
+\\ \"        { builder.append('"'); }
+\\ [0-9]{3}  { builder.append((char)(Integer.parseInt(yytext().substring(1)))); }
+\\ .         { error("invalid escape arguments in string literal"); }
+[^\"\n\\]+   { builder.append(yytext()); }
+\n           { error("invalid newline in string literal"); }
+<<EOF>>      { yybegin(YYINITIAL); error("unclosed string literal"); }
 }
 
 .            { error("invalid character '%s'", yytext()); }

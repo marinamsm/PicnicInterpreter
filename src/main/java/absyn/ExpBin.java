@@ -96,9 +96,15 @@ public class ExpBin extends Exp {
          case POWER: return new ValueInt(Math.round(Math.pow(((ValueInt)x).value, ((ValueInt)y).value)));
 
          case AND: return new ValueBool(((ValueBool)x).value && ((ValueBool)y).value);
-         // TODO: other operators
-      }
+         case OR: return new ValueBool(((ValueBool)x).value || ((ValueBool)y).value);
 
+         case LT: return new ValueBool(((ValueInt)x).value < ((ValueInt)y).value);
+         case LE: return new ValueBool(((ValueInt)x).value <= ((ValueInt)y).value);
+         case GT: return new ValueBool(((ValueInt)x).value > ((ValueInt)y).value);
+         case GE: return new ValueBool(((ValueInt)x).value >= ((ValueInt)y).value);
+         case NE: return new ValueBool(((ValueInt)x).value != ((ValueInt)y).value);
+         case EQ: return new ValueBool(((ValueInt)x).value == ((ValueInt)y).value);
+      }
       return super.eval(memory, functions);
    }
 }
