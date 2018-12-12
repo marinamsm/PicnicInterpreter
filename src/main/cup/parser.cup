@@ -119,6 +119,7 @@ exps ::=
         
 fun ::=
   typeid:n LPAREN typeids:ps RPAREN ASSIGN exp:b {: RESULT = new Fun(loc(nxleft, bxright), n, ps, b); :}
+| typeid:n LPAREN RPAREN ASSIGN exp:b {: RESULT = new Fun(loc(nxleft, bxright), n, null, b); :}
 ;
 
 type ::=

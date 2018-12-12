@@ -22,7 +22,7 @@ public class Fun extends AST {
    public Fun(Loc loc, TypeId name, List<TypeId> parameters, Exp body) {
       super(loc);
       this.name = name;
-      this.parameters = parameters;
+      this.parameters = parameters == null ? List.empty() : parameters;
       this.body = body;
    }
 
