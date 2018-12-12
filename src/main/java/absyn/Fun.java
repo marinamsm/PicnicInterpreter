@@ -7,11 +7,10 @@ import env.VarEntry;
 import io.vavr.collection.List;
 import io.vavr.collection.Tree;
 import io.vavr.render.ToTree;
+import types.INT;
 import types.Type;
 
-import static error.ErrorHelper.fatal;
-import static error.ErrorHelper.sameParameter;
-import static error.ErrorHelper.typeMismatch;
+import static error.ErrorHelper.*;
 
 public class Fun extends AST {
 
@@ -58,6 +57,10 @@ public class Fun extends AST {
       List<Type> formals = parameters.map(p -> p.semantic(env));
       // check the result type
       Type result = name.semantic(env);
+      if (name.id.equals("main") && !(formals.isEmpty()))
+          throw tooMuchArguments(name.loc, name.id);
+      if (name.id.equals("main") && !(result.is(INT.T)))
+          throw typeMismatch(name.loc, result, INT.T);
       // add function name to the environment
       env.venv.put(name.id, new FunEntry(formals, result));
    }
