@@ -3,33 +3,32 @@ package absyn;
 import env.Env;
 import env.Table;
 import interpret.Value;
-import interpret.ValueString;
+import interpret.ValueVoid;
 import io.vavr.collection.List;
 import io.vavr.collection.Tree;
-import types.STRING;
+import types.VOID;
 import types.Type;
 
-public class ExpString extends Exp {
+public class ExpVoid extends Exp {
     public final String value;
 
-    public ExpString(Loc loc, String value) {
+    public ExpVoid(Loc loc) {
         super(loc);
-        this.value = value;
+        this.value = null;
     }
 
     @Override
     public Tree.Node<String> toTree() {
-        return Tree.of(annotateType("ExpString: " + value));
+        return Tree.of(annotateType("ExpVoid: " + value));
     }
 
     @Override
     protected Type semantic_(Env env) {
-        // COMPLETE
-        return STRING.T;
+        return VOID.T;
     }
 
     @Override
     public Value eval(Table<Value> memory, List<Fun> functions) {
-        return new ValueString(value);
+        return null;
     }
 }

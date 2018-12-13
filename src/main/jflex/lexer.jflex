@@ -102,7 +102,7 @@ id        = [a-zA-Z][a-zA-Z0-9_]*
 
 {litint}     { return tok(LITINT, yytext()); }
 {litbool}    { return tok(LITBOOL, yytext()); }
-{litdouble}  { return tok(LITDOUBLE, new Double(yytext())); }
+{litdouble}  { return tok(LITDOUBLE, yytext()); }
 {litstring}  { return tok(LITSTRING, new String(yytext())); }
 {litvoid}    { return tok(VOID, yytext().intern()); }
 \"           { builder.setLength(0); strLeft = locLeft(); yybegin(STR); }

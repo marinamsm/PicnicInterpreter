@@ -3,6 +3,7 @@ package absyn;
 import env.Env;
 import env.Table;
 import interpret.Value;
+import interpret.ValueDouble;
 import interpret.ValueInt;
 import io.vavr.collection.List;
 import types.Type;

@@ -4,6 +4,7 @@ import env.Env;
 import env.Table;
 import interpret.Value;
 import interpret.ValueBool;
+import interpret.ValueDouble;
 import interpret.ValueInt;
 import io.vavr.collection.List;
 import io.vavr.collection.Tree;
@@ -89,7 +90,7 @@ public class ExpBin extends Exp {
       Value x = left.eval(memory, functions);
       Value y = right.eval(memory, functions);
       switch (op) {
-         case PLUS: return new ValueInt(((ValueInt)x).value + ((ValueInt)y).value);
+         case PLUS: return new ValueDouble(((ValueDouble)x).value + ((ValueDouble)y).value);
          case MINUS: return new ValueInt(((ValueInt)x).value - ((ValueInt)y).value);
          case TIMES: return new ValueInt(((ValueInt)x).value * ((ValueInt)y).value);
          case DIV: return new ValueInt(((ValueInt)x).value / ((ValueInt)y).value);
