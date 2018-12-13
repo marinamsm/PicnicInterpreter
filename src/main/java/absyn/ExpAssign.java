@@ -1,15 +1,9 @@
 package absyn;
 
-import env.Entry;
 import env.Env;
-import env.VarEntry;
 import io.vavr.collection.Tree;
 import types.Type;
-import types.VOID;
 
-import static error.ErrorHelper.notAVariable;
-import static error.ErrorHelper.typeMismatch;
-import static error.ErrorHelper.undefined;
 
 public class ExpAssign extends Exp {
     public final String variable;

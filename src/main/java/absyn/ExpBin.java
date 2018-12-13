@@ -9,6 +9,7 @@ import interpret.ValueInt;
 import io.vavr.collection.List;
 import io.vavr.collection.Tree;
 import types.BOOL;
+import types.DOUBLE;
 import types.INT;
 import types.Type;
 
@@ -41,10 +42,10 @@ public class ExpBin extends Exp {
       right.semantic(env);
       switch (op) {
          // arithmetic operations
-         case PLUS:
-         case MINUS:
-         case TIMES:
-         case DIV:
+         case PLUS: return DOUBLE.T;
+         case MINUS: return DOUBLE.T;
+         case TIMES: return DOUBLE.T;
+         case DIV: return DOUBLE.T;
          case POWER:
             if (! left.type.is(INT.T))
                throw typeMismatch(left.loc, left.type, INT.T);
@@ -53,9 +54,9 @@ public class ExpBin extends Exp {
             return INT.T;
 
          // relational operations
-         case LT:
-         case LE:
-         case GT:
+         case LT: return BOOL.T;
+         case LE: return BOOL.T;
+         case GT: return BOOL.T;
          case GE:
             if (! left.type.is(INT.T))
                throw typeMismatch(left.loc, left.type, INT.T);
@@ -63,7 +64,7 @@ public class ExpBin extends Exp {
                throw typeMismatch(right.loc, right.type, INT.T);
             return BOOL.T;
 
-         case EQ:
+         case EQ: return BOOL.T;
          case NE:
             if (left.type.is(right.type))
                return BOOL.T;
@@ -72,7 +73,7 @@ public class ExpBin extends Exp {
             throw typeMismatch(right.loc, right.type, left.type);
 
          // logical operations
-         case AND:
+         case AND: return BOOL.T;
          case OR:
             if (! left.type.is(BOOL.T))
                throw typeMismatch(left.loc, left.type, BOOL.T);
@@ -91,9 +92,9 @@ public class ExpBin extends Exp {
       Value y = right.eval(memory, functions);
       switch (op) {
          case PLUS: return new ValueDouble(((ValueDouble)x).value + ((ValueDouble)y).value);
-         case MINUS: return new ValueInt(((ValueInt)x).value - ((ValueInt)y).value);
-         case TIMES: return new ValueInt(((ValueInt)x).value * ((ValueInt)y).value);
-         case DIV: return new ValueInt(((ValueInt)x).value / ((ValueInt)y).value);
+         case MINUS: return new ValueDouble(((ValueDouble)x).value - ((ValueDouble)y).value);
+         case TIMES: return new ValueDouble(((ValueDouble)x).value * ((ValueDouble)y).value);
+         case DIV: return new ValueDouble(((ValueDouble)x).value / ((ValueDouble)y).value);
          case POWER: return new ValueInt(Math.round(Math.pow(((ValueInt)x).value, ((ValueInt)y).value)));
 
          case AND: return new ValueBool(((ValueBool)x).value && ((ValueBool)y).value);

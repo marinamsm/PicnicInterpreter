@@ -83,7 +83,7 @@ precedence right    POWER;
 start with program;
 
 program ::=
-  funs:fs {: RESULT = new Program(loc(fsxleft, fsxright), fs); :}
+  funs:fs               {: RESULT = new Program(loc(fsxleft, fsxright), fs); :}
 ;
 
 exp ::=
