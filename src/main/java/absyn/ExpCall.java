@@ -4,13 +4,12 @@ import env.Entry;
 import env.Env;
 import env.FunEntry;
 import env.Table;
-import interpret.Value;
-import interpret.ValueInt;
+import interpret.*;
 import io.vavr.collection.List;
 import io.vavr.collection.Tree;
 import io.vavr.control.Option;
 import io.vavr.render.ToTree;
-import types.Type;
+import types.*;
 
 import static error.ErrorHelper.*;
 
@@ -71,12 +70,65 @@ public class ExpCall extends Exp {
 
    private Value applyPrimitive(String name, List<Value> arguments) {
       switch (name) {
+         case "print":
+            System.out.println(((ValueString)arguments.get(0)).value);
+            return new ValueVoid();
          case "printint":
             System.out.println(((ValueInt)arguments.get(0)).value);
-            return new ValueInt(0L);
+             return new ValueVoid();
+         case "printdouble":
+            System.out.println(((ValueDouble)arguments.get(0)).value);
+            return new ValueVoid();
+         case "printbool":
+            System.out.println(((ValueBool)arguments.get(0)).value);
+            return new ValueVoid();
+         case "cast2double":
+            return new ValueDouble(((ValueDouble)arguments.get(0)).value);
+         case "round": {
+             double d = ((ValueDouble) arguments.get(0)).value;
+             return new ValueInt(Math.round(d));
+         }
+         case "ceil": {
+             double d = ((ValueDouble) arguments.get(0)).value;
+             long i = (long) Math.ceil(d + 0.5d);
+             return new ValueInt(i);
+         }
+         case "floor": {
+             double d = ((ValueDouble) arguments.get(0)).value;
+             long i = (long) Math.floor(d - 0.5d);
+             return new ValueInt(i);
+         }
+          case "size": {
+              String str = ((ValueString) arguments.get(0)).value;
+              long i = str.length();
+              return new ValueInt(i);
+          }
+          case "char": {
+              long index = ((ValueInt) arguments.get(0)).value;
+              String str = ((ValueString) arguments.get(1)).value;
+              String ch = Character.toString(str.charAt((int)index));
+              return new ValueString(ch);
+          }
+          case "substr": {
+              long start = ((ValueInt) arguments.get(0)).value;
+              long end = ((ValueInt) arguments.get(1)).value;
+              String str = ((ValueString) arguments.get(2)).value;
+              String sub = str.substring((int)start, (int)end);
+              return new ValueString(sub);
+          }
+          case "concat": {
+              String str1 = ((ValueString) arguments.get(0)).value;
+              String str2 = ((ValueString) arguments.get(1)).value;
+              return new ValueString(str1 + str2);
+          }
+          case "return": {
+              return new ValueInt(((ValueInt)arguments.get(0)).value);
+          }
          default:
             fatal("unknown primitive function");
             return new ValueInt(0L);
       }
    }
+
+
 }

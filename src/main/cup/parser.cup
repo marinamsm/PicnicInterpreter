@@ -119,7 +119,6 @@ exps ::=
         
 fun ::=
   typeid:n LPAREN typeids:ps RPAREN ASSIGN exp:b {: RESULT = new Fun(loc(nxleft, bxright), n, ps, b); :}
-| typeid:n LPAREN RPAREN ASSIGN exp:b {: RESULT = new Fun(loc(nxleft, bxright), n, null, b); :}
 ;
 
 type ::=
@@ -135,7 +134,8 @@ typeid ::=
 ;
 
 typeids ::=
-  typeid:x                  {: RESULT = List.of(x); :}
+  /* empty */               {: RESULT = List.empty(); :}
+| typeid:x                  {: RESULT = List.of(x); :}
 | typeid:x COMMA typeids:xs {: RESULT = xs.prepend(x); :}
 ;
 

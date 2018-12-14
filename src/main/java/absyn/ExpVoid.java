@@ -29,6 +29,6 @@ public class ExpVoid extends Exp {
 
     @Override
     public Value eval(Table<Value> memory, List<Fun> functions) {
-        return null;
+        return new ValueVoid();
     }
 }

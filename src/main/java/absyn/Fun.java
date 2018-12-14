@@ -57,8 +57,10 @@ public class Fun extends AST {
       List<Type> formals = parameters.map(p -> p.semantic(env));
       // check the result type
       Type result = name.semantic(env);
-      if (name.id.equals("main") && !(formals.isEmpty()))
+       //System.out.println(name.id);
+      if (name.id.equals("main") && !(formals.isEmpty())) {
           throw tooMuchArguments(name.loc, name.id);
+      }
       if (name.id.equals("main") && !(result.is(INT.T)))
           throw typeMismatch(name.loc, result, INT.T);
       // add function name to the environment
@@ -78,9 +80,9 @@ public class Fun extends AST {
       List<TypeId> ps = parameters;
       List<Type> fs = f.formals;
       while (! ps.isEmpty() && ! fs.isEmpty()) {
-         env.venv.put(ps.head().id, new VarEntry(fs.head()));
-         ps = ps.tail();
-         fs = fs.tail();
+          env.venv.put(ps.head().id, new VarEntry(fs.head()));
+          ps = ps.tail();
+          fs = fs.tail();
       }
       // check the body
       body.semantic(env);

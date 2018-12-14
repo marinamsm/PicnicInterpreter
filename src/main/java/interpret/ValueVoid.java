@@ -1,9 +1,9 @@
 package interpret;
 
 public class ValueVoid extends Value {
-    public final Void value;
+    public final String value;
 
     public ValueVoid() {
-        this.value = null;
+        this.value = "null";
     }
 }
